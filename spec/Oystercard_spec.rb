@@ -15,7 +15,7 @@ RSpec.describe Oystercard do
 
     it 'Raises an error if balance exceeds £90' do
       limit = Oystercard::LIMIT
-      expect{ subject.top_up limit }.to raise_error "You're over the limit #{limit}"
+      expect{ subject.top_up limit + 1 }.to raise_error "You're over the limit #{limit}"
     end
   end
 
@@ -30,6 +30,7 @@ RSpec.describe Oystercard do
   context 'Card behaviour during the journey' do
 
     it 'User can touch in' do
+      subject.top_up(Oystercard::LIMIT)
       expect(subject.touch_in).to eq(true)
     end
 
@@ -38,16 +39,14 @@ RSpec.describe Oystercard do
     end
 
     it 'Touch in changes journey status' do
+      subject.top_up(Oystercard::LIMIT)
       expect{ subject.touch_in }. to change { subject.journey }.to true
     end
 
     it 'raises error if insufficient funds' do
-      expect{subject.touch_in}.to raise_error('insufficient funds')
+      expect{ subject.touch_in }.to raise_error('insufficient funds')
     end
 
 
   end
-
-
-
 end
