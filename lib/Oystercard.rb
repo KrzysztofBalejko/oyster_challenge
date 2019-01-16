@@ -5,9 +5,14 @@ class Oystercard
 
   attr_accessor :balance, :journey
 
-  def initialize(balance = 0, journey = false)
+  def initialize(balance = 0, station = nil, journey = false)
     @balance = balance
+    @station = station
     @journey = journey
+  end
+
+  def travelling?
+    @journey
   end
 
   def top_up(amount)
@@ -23,11 +28,14 @@ class Oystercard
     @balance -= fare
   end
 
-  def touch_in
+  def touch_in(station)
     if @balance < MIN_FARE
       fail 'insufficient funds'
     end
       @journey = true
+      @station = station
+      # @journey = true
+
   end
 
 
