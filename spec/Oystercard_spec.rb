@@ -19,14 +19,6 @@ RSpec.describe Oystercard do
     end
   end
 
-  describe '#deduct_fare' do
-    it { is_expected.to respond_to(:deduct_fare).with(1).argument }
-
-    it 'deducts a fare from the balance' do
-      expect { subject.deduct_fare 4 }.to change { subject.balance }.by -4
-    end
-  end
-
   context 'Card behaviour during the journey' do
 
     it 'User can touch in' do
@@ -47,12 +39,11 @@ RSpec.describe Oystercard do
       expect{ subject.touch_in }.to raise_error('insufficient funds')
     end
 
-    # it 'charges user fare on touch out' do
-    #   subject.top_up(Oystercard::LIMIT)
-    #   subject.touch_in
-    #   expect {subject.touch_out)}.to change{subject.balance}.by(-)
-    #
-    # end
+    it 'charges user fare on touch out' do
+      subject.top_up(Oystercard::LIMIT)
+      subject.touch_in
+      expect {subject.touch_out}.to change{subject.balance}.by(-Oystercard::MIN_FARE)
+    end
 
   end
 end

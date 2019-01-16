@@ -12,7 +12,11 @@ class Oystercard
 
   def top_up(amount)
     fail "You're over the limit #{LIMIT}" if (@balance + amount) > LIMIT
-      @balance += amount
+    add(amount)
+  end
+
+  def add(amount)
+    @balance += amount
   end
 
   def deduct_fare(fare)
@@ -28,8 +32,11 @@ class Oystercard
 
 
   def touch_out
+    deduct_fare(MIN_FARE)
     @journey = false
   end
+
+  private :add, :deduct_fare
 
 
 end
