@@ -1,6 +1,6 @@
 class Oystercard
 
-  LIMIT = 91
+  LIMIT = 90
 
   attr_accessor :balance, :journey
 
@@ -10,7 +10,7 @@ class Oystercard
   end
 
   def top_up(amount)
-    fail "You're over the limit #{LIMIT}" if (@balance + amount) >= LIMIT
+    fail "You're over the limit #{LIMIT}" if (@balance + amount) > LIMIT
       @balance += amount
   end
 
@@ -19,16 +19,16 @@ class Oystercard
   end
 
   def touch_in
-    @journey = true
+    if @balance < 1
+      fail 'insufficient funds'
+    end
+      @journey = true
   end
+
 
   def touch_out
     @journey = false
   end
-
-  # def in_journey?
-  #
-  # end
 
 
 end
