@@ -3,16 +3,15 @@ class Oystercard
   LIMIT = 90
   MIN_FARE = 1
 
-  attr_accessor :balance, :journey, :station
+  attr_accessor :balance, :entry_station
 
-  def initialize(balance = 0, journey = false)
+  def initialize(balance = 0)
     @balance = balance
-    @station = station
-    @journey = journey
+    @entry_station = nil
   end
 
   def travelling?
-    @journey
+    !!entry_station
   end
 
   def top_up(amount)
@@ -32,15 +31,12 @@ class Oystercard
     if @balance < MIN_FARE
       fail 'insufficient funds'
     end
-      @journey = true
-      @station = station
+      @entry_station = station
   end
-
 
   def touch_out
     deduct_fare(MIN_FARE)
-    @journey = false
-    @station = nil
+    @entry_station = nil
   end
 
   private :add, :deduct_fare
