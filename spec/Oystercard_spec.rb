@@ -4,7 +4,9 @@ require 'Oystercard'
 
 RSpec.describe Oystercard do
 
-let(:station) { station = double('entry station') }
+let(:paddington) { station = double('Paddington (entry)') }
+let(:waterloo) { station = double('Waterloo (exit)') }
+# let(:journey){ {entry_station: entry_station, exit_station: exit_station} }
 
 
   it 'Card has a default balance of 0' do
@@ -27,16 +29,18 @@ let(:station) { station = double('entry station') }
 
   context 'Card behaviour during the journey' do
 
+
+
     it 'User can touch in' do
       subject.top_up(Oystercard::MIN_FARE)
-      subject.touch_in(station)
+      subject.touch_in(paddington)
       expect(subject).to be_travelling
     end
 
     it 'User can touch out' do
       subject.top_up(Oystercard::MIN_FARE)
-      subject.touch_in(station)
-      subject.touch_out
+      subject.touch_in(paddington)
+      subject.touch_out(waterloo)
       expect(subject).not_to be_travelling
     end
 
@@ -50,26 +54,58 @@ let(:station) { station = double('entry station') }
     # end
 
     it 'raises error if insufficient funds' do
-      expect{ subject.touch_in station }.to raise_error('insufficient funds')
+      expect{ subject.touch_in paddington }.to raise_error('insufficient funds')
     end
 
     it 'charges user fare on touch out' do
       subject.top_up(Oystercard::LIMIT)
-      subject.touch_in(station)
-      expect {subject.touch_out}.to change{subject.balance}.by(-Oystercard::MIN_FARE)
+      subject.touch_in(paddington)
+      expect {subject.touch_out(waterloo)}.to change{subject.balance}.by(-Oystercard::MIN_FARE)
     end
 
     it { is_expected.to respond_to(:touch_in).with(1).argument }
 
     it 'card remembers the entry station after the touch in' do
       subject.top_up(Oystercard::LIMIT)
-      expect(subject.touch_in(station)).to eq(station)
+      subject.touch_in(paddington)
+      expect(subject.entry_station).to eq(paddington)
     end
 
-    it 'card forgets the entry station on touch out' do
+    # it 'card forgets the entry station on touch out' do
+    #   subject.top_up(Oystercard::LIMIT)
+    #   subject.touch_in(paddington)
+    #   expect{ subject.touch_out(waterloo) }.to change { subject.entry_station }.to nil
+    # end
+
+    it { is_expected.to respond_to(:touch_out).with(1).argument }
+
+    it 'records the exit station on touch out' do
       subject.top_up(Oystercard::LIMIT)
-      subject.touch_in(station)
-      expect{ subject.touch_out }.to change { subject.entry_station }.to nil
+      subject.touch_in(paddington)
+      subject.touch_out(waterloo)
+      expect(subject.exit_station).to eq(waterloo)
+    end
+
+    it 'checks the card has empty list of journeys by default' do
+      expect(subject.journey_list).to be_empty
+    end
+
+    # let(:journey){ {entry_station: entry_station, exit_station: exit_station} }
+
+    it 'checks touch_in and touch_out creates one journey' do
+      entry_station = double('kings (entry)')
+      exit_station = double('waterloo (exit)')
+      subject.top_up(Oystercard::LIMIT)
+      puts "subject.journey_list (initial)"
+      p subject.journey_list
+      subject.touch_in(entry_station)
+      puts "subject.journey_list (after touch in)"
+      p subject.journey_list
+      subject.touch_out(exit_station)
+      puts "subject.journey_list (after touch out)"
+      p subject.journey_list
+
+      expect(subject.journey_list).to include journey
     end
 
 
