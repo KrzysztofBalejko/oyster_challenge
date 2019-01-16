@@ -63,9 +63,11 @@ let(:station) { station = double('entry station') }
       expect(subject.touch_in(station)).to eq(station)
     end
 
-    # it 'card forgets the entry station on touch out' do
-    #
-    # end
+    it 'card forgets the entry station on touch out' do
+      subject.top_up(Oystercard::LIMIT)
+      subject.touch_in(station)
+      expect{ subject.touch_out }.to change { subject.station }.to nil
+    end
 
 
 
