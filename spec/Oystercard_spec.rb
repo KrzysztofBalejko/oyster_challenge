@@ -90,22 +90,11 @@ let(:waterloo) { station = double('Waterloo (exit)') }
       expect(subject.journey_list).to be_empty
     end
 
-    # let(:journey){ {entry_station: entry_station, exit_station: exit_station} }
-
     it 'checks touch_in and touch_out creates one journey' do
-      entry_station = double('kings (entry)')
-      exit_station = double('waterloo (exit)')
       subject.top_up(Oystercard::LIMIT)
-      puts "subject.journey_list (initial)"
-      p subject.journey_list
-      subject.touch_in(entry_station)
-      puts "subject.journey_list (after touch in)"
-      p subject.journey_list
-      subject.touch_out(exit_station)
-      puts "subject.journey_list (after touch out)"
-      p subject.journey_list
-
-      expect(subject.journey_list).to include journey
+      subject.touch_in('entry_station')
+      subject.touch_out('exit_station')
+      expect(subject.journey_list).to include :entry=>"entry_station", :exit=>"exit_station"
     end
 
 
