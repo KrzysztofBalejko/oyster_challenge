@@ -3,9 +3,9 @@ class Oystercard
   LIMIT = 90
   MIN_FARE = 1
 
-  attr_accessor :balance, :journey
+  attr_accessor :balance, :journey, :station
 
-  def initialize(balance = 0, station = nil, journey = false)
+  def initialize(balance = 0, journey = false)
     @balance = balance
     @station = station
     @journey = journey
@@ -34,14 +34,13 @@ class Oystercard
     end
       @journey = true
       @station = station
-      # @journey = true
-
   end
 
 
   def touch_out
     deduct_fare(MIN_FARE)
     @journey = false
+    @station = nil
   end
 
   private :add, :deduct_fare
