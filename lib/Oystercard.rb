@@ -1,4 +1,5 @@
 require_relative 'Station'
+require_relative 'Journey'
 
 class Oystercard
 
@@ -12,9 +13,9 @@ class Oystercard
     @journey_list = []
   end
 
-  def travelling?
-    !!entry_station
-  end
+  # def travelling?
+  #   !!entry_station
+  # end
 
   def top_up(amount)
     fail "You're over the limit #{LIMIT}" if (@balance + amount) > LIMIT

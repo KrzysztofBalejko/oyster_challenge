@@ -7,4 +7,8 @@ class Journey
     @exit_station = exit_station
   end
 
+  def travelling?
+    !!entry_station
+  end
+
 end
