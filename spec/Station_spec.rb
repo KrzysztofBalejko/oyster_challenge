@@ -1,14 +1,13 @@
-require 'Station'
+require 'station'
+describe Station do
 
-RSpec.describe Station do
+  subject {Station.new("Old Street", 1)}
 
+  it 'knows its name' do
+    expect(subject.name).to eq("Old Street")
+  end
 
-it 'check for name' do
-  expect(subject.name).to eq("Victoria")
-end
-
-subject { described_class.new("Victoria", 2) }
-
-
-
+  it 'knows its zone' do
+    expect(subject.zone).to eq(1)
+  end
 end
