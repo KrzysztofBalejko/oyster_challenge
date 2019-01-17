@@ -1,3 +1,5 @@
+require_relative 'Station'
+
 class Oystercard
 
   LIMIT = 90
