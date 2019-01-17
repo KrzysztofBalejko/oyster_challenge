@@ -1,14 +1,39 @@
+require_relative 'Oystercard'
+
 class Journey
 
-  attr_accessor :entry_station, :exit_station
+MIN_FARE = 1
 
-  def initialize(entry_station, exit_station)
-    @entry_station = entry_station
-    @exit_station = exit_station
+attr_accessor :card, :entry_station, :exit_station, :journey_list
+
+  def initialize(card=Oystercard.new)
+    @card = card
+    @journey_list = []
   end
 
   def travelling?
     !!entry_station
   end
+
+  def touch_in(station)
+    if @card.balance < MIN_FARE
+      fail 'insufficient funds'
+    end
+      @journey_list << {:entry => station}
+      @entry_station = station
+  end
+
+  def touch_out(station)
+    deduct_fare(MIN_FARE)
+    @journey_list[0][:exit] = station
+    @entry_station = nil
+    @exit_station = station
+  end
+
+  def deduct_fare(fare)
+    @card.balance -= fare
+  end
+
+
 
 end
