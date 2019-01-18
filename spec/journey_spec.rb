@@ -59,7 +59,7 @@ RSpec.describe Journey do
       subject.card.top_up(Oystercard::LIMIT)
       subject.touch_in('entry_station')
       subject.touch_out('exit_station')
-      expect(subject.journey_list).to include :entry=>"entry_station", :exit=>"exit_station"
+      expect(subject.journey_list).to include(a_kind_of(Hash)) #:entry=>"entry_station", :exit=>"exit_station"
     end
   end
 
@@ -70,12 +70,17 @@ RSpec.describe Journey do
       expect(subject.fare).to eq(Journey::MIN_FARE)
     end
 
-    it 'fare returns the penalty fare of 6 if there was no no exit station' do
+    it 'fare returns the penalty fare of 6 if there was no exit station' do
       subject.card.top_up(7)
       subject.touch_in('paddington')
       expect(subject.fare).to eq(6)
     end
 
+    it 'fare returns the penalty fare of 6 if there was no entry station' do
+      subject.card.top_up(7)
+      subject.touch_out('victoria')
+      expect(subject.fare).to eq(6)
+    end
 
   end
 
