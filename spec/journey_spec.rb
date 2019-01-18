@@ -61,8 +61,25 @@ RSpec.describe Journey do
       subject.touch_out('exit_station')
       expect(subject.journey_list).to include :entry=>"entry_station", :exit=>"exit_station"
     end
+  end
+
+  context '#fare' do
+    it { is_expected.to respond_to(:fare) }
+
+    it 'fare method should return the minimum fare ' do
+      expect(subject.fare).to eq(Journey::MIN_FARE)
+    end
+
+    it 'fare returns the penalty fare of 6 if there was no no exit station' do
+      subject.card.top_up(7)
+      subject.touch_in('paddington')
+      expect(subject.fare).to eq(6)
+    end
+
 
   end
+
+
 
 
 end
