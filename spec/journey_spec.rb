@@ -59,7 +59,7 @@ RSpec.describe Journey do
       subject.card.top_up(Oystercard::LIMIT)
       subject.touch_in('entry_station')
       subject.touch_out('exit_station')
-      expect(subject.journey_list).to include(a_kind_of(Hash)) #:entry=>"entry_station", :exit=>"exit_station"
+      expect(subject.journey_list).to include(a_kind_of(Hash))
     end
   end
 
@@ -81,7 +81,6 @@ RSpec.describe Journey do
       subject.touch_out('victoria')
       expect(subject.fare).to eq(6)
     end
-
   end
 
 

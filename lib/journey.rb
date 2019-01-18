@@ -16,17 +16,18 @@ attr_accessor :card, :entry_station, :exit_station, :journey_list
   end
 
   def touch_in(station)
-    if @card.balance < MIN_FARE
-      fail 'insufficient funds'
-    end
-      @journey_list << {:entry => station}
-      @entry_station = station
+    fail 'insufficient funds' if @card.balance < MIN_FARE
+    @journey_list << {:entry => station}
+    @entry_station = station
   end
 
   def touch_out(station)
     deduct_fare(MIN_FARE)
-    # @journey_list[0][:exit] = station
     @journey_list << {:exit => station }
+    set_station(station)
+  end
+
+  def set_station(station)
     @entry_station = nil
     @exit_station = station
   end
@@ -36,14 +37,11 @@ attr_accessor :card, :entry_station, :exit_station, :journey_list
   end
 
   def fare
-    if @entry_station.respond_to?(:to_str) && @exit_station == nil
-      return 6
-    elsif @entry_station == nil && @exit_station.respond_to?(:to_str)
-      return 6
-    end
+    return 6 if @entry_station.respond_to?(:to_str) && @exit_station == nil
+    return 6 if @entry_station == nil && @exit_station.respond_to?(:to_str)
     MIN_FARE
   end
 
-
+  private :set_station, :deduct_fare
 
 end
