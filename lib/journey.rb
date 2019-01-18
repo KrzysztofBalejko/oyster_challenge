@@ -25,7 +25,8 @@ attr_accessor :card, :entry_station, :exit_station, :journey_list
 
   def touch_out(station)
     deduct_fare(MIN_FARE)
-    @journey_list[0][:exit] = station
+    # @journey_list[0][:exit] = station
+    @journey_list << {:exit => station }
     @entry_station = nil
     @exit_station = station
   end
