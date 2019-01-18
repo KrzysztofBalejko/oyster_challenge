@@ -34,6 +34,15 @@ attr_accessor :card, :entry_station, :exit_station, :journey_list
     @card.balance -= fare
   end
 
+  def fare
+    if @entry_station.respond_to?(:to_str) && @exit_station == nil
+      return 6
+    elsif @entry_station == nil && @exit_station.respond_to?(:to_str)
+      return 6
+    end
+    MIN_FARE
+  end
+
 
 
 end
