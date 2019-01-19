@@ -1,6 +1,6 @@
 ## oyster_challenge ##
 
-#Exercise from Makers Academy#
+**Exercise from Makers Academy**
 -------------------------------
 The aim of this challenge was to build a complex system, stretch our skills in Ruby, TDD and object-oriented design. It was a pair-programming exercise and each day
 I would pair with different person working on different versions of this project.
